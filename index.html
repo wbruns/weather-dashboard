@@ -8,23 +8,82 @@
   <link rel="stylesheet" href="./assets/css/style.css" />
   <title>Weather Dashboard</title>
 </head>
-<body>
+<body class="flex-column">
   <!-- header -->
-  <div class="container-fluid">
-    <div class="row justify-content-center py-2 bg-info">
-      <h1 class="col-auto mb-auto">Weather Dashboard</h1>
-    </div>
+  <header class="bg-info">
+    <h1>Weather Dashboard</h1>
+  </header>
+  
+  <main class="flex-row">
     <!-- inputs -->
-    <div class="row">
-      <h2 class="col">Search for a City:</h2>
+    <div class="col col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">Search for a City:</h2>
+          <input class="" type="text" placeholder="City name">
+          <button class="bg-info">Search</button>
+          <!-- list for saved cities -->
+          <ul></ul>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <input class="col" type="text" aria-placeholder="City name">
+
+    <!-- results -->
+    <div class="col col-md-8">
+      <!-- today's forecast -->
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">City/date<span>img</span></h2>
+          <div class="card-text">
+            <p>temp</p>
+            <p>wind</p>
+            <p>humidity</p>
+            <p>uv index</p>
+          </div>
+        </div>
+      </div>
+      <!-- 5 day forecast -->
+      <div class="card-deck">
+        <!-- 1 day ahead -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text">stuff about the forecast</p>
+          </div>
+        </div>
+        <!-- 2 day ahead -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text">stuff about the forecast</p>
+          </div>
+        </div>
+        <!-- 3 day ahead -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text">stuff about the forecast</p>
+          </div>
+        </div>
+        <!-- 4 day ahead -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text">stuff about the forecast</p>
+          </div>
+        </div>
+        <!-- 5 day -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text">stuff about the forecast</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <button class="col">Search</button>
-    </div>
-  </div>
+  </main>
+    
+  
   
   
 
