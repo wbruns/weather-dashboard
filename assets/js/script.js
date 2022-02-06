@@ -21,11 +21,15 @@ $(document).ready(function() {
   // city search button is clicked
   $('#city-search .btn').click(function() {
     // get the city name
-    var cityName = $('#city').val();
+    var cityName = $('#city').val().trim();
     console.log(cityName);
-    // clear input form
-    $('#city').val('');
-
-    getWeather(cityName);
+    if (cityName) {
+      // clear input form
+      $('#city').val('');
+      getWeather(cityName);
+    } else {
+      alert('Please enter a City name');
+    }
+    
   });
 });
