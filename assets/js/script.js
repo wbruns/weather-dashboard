@@ -20,9 +20,8 @@ $(document).ready(function() {
         // display city name
         console.log(openData.name);
         $('#city-name').html(openData.name);
-        console.log(lon);
-        console.log(lat);
-        console.log(openData);
+        // add city name to cities obj for storage
+        cities.name = openData.name;
         // call the one call api
         var oneUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appid=' + apiKey;
         fetch(oneUrl).then(function(response) {
@@ -47,18 +46,27 @@ $(document).ready(function() {
       humidity: oneData.current.humidity,
       uvi: oneData.current.uvi
     };
-    $.extend(cities, current);
-    console.log(current);
-    console.log(cities);
+    // $.extend(cities, current);
+    cities.current = current;
     // array for daily forecast cards
     var dailyArray = $(".card-deck .card").toArray();
+    var daily = [];
     // loop over and display info
     $.each(dailyArray, function(i) {
       $(this).find('.daily-temp').html(oneData.daily[i].temp.day);
       $(this).find('.daily-wind').html(oneData.daily[i].wind_speed);
       $(this).find('.daily-humidity').html(oneData.daily[i].humidity);
       $(this).find('.daily-uv').html(oneData.daily[i].uvi);
+      daily.push({
+        temp: oneData.daily[i].temp.day,
+        wind_speed: oneData.daily[i].wind_speed,
+        humidity: oneData.daily[i].humidity,
+        uvi: oneData.daily[i].uvi
+      });
     })
+    // $.extend(cities, current, daily);
+    cities.daily = daily;
+    console.log(cities);
   };
   // function for loading cities object from storage
   var loadCities = function() {
