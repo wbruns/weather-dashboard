@@ -1,8 +1,7 @@
 // my open weather api key
 var apiKey = '4d78acdcd141fb66bc220ffe67b06fc4';
 // obj for storage
-var cities = {};
-console.log(cities);
+var cities = [];
 
 // code wont run till dom is loaded
 $(document).ready(function() {
@@ -14,42 +13,43 @@ $(document).ready(function() {
     // call open weather api
     fetch(openUrl).then(function(response) {
       response.json().then(function(openData) {
-        // get longitude and latitude coordinates 
+        // get longitude, latitude coordinates and name
         var lon = openData.coord.lon;
         var lat = openData.coord.lat;
-        // display city name
-        console.log(openData.name);
-        $('#city-name').html(openData.name);
-        // add city name to cities obj for storage
-        cities.name = openData.name;
+        var cityName = openData.name;
+        
         // call the one call api
         var oneUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&units=imperial&exclude=minutely,hourly,alerts&appid=' + apiKey;
         fetch(oneUrl).then(function(response) {
           response.json().then(function(oneData) {
             console.log(oneData);
-            displayWeather(oneData);
+            displayWeather(cityName, oneData);
           });
         });
       });
     });
   };
   // function for displaying weather info
-  var displayWeather = function(oneData) {
+  var displayWeather = function(cityName, oneData) {
+    $('#city-name').html(cityName);
     $("#current-temp").html(oneData.current.temp);
     $('#current-wind').html(oneData.current.wind_speed);
     $('#current-humidity').html(oneData.current.humidity);
     $('#current-uv').html(oneData.current.uvi);
     // put the data in our cities object to save
-    var current = {
-      temp: oneData.current.temp,
-      wind_speed: oneData.current.wind_speed,
-      humidity: oneData.current.humidity,
-      uvi: oneData.current.uvi
+    var city = {
+      "name": cityName,
+      current: {
+        temp: oneData.current.temp,
+        wind_speed: oneData.current.wind_speed,
+        humidity: oneData.current.humidity,
+        uvi: oneData.current.uvi
+      }
     };
-    // $.extend(cities, current);
-    cities.current = current;
-    // array for daily forecast cards
+    console.log(city);
+    // array for daily forecast cards elements
     var dailyArray = $(".card-deck .card").toArray();
+    // array for storing daily info
     var daily = [];
     // loop over and display info
     $.each(dailyArray, function(i) {
@@ -57,16 +57,18 @@ $(document).ready(function() {
       $(this).find('.daily-wind').html(oneData.daily[i].wind_speed);
       $(this).find('.daily-humidity').html(oneData.daily[i].humidity);
       $(this).find('.daily-uv').html(oneData.daily[i].uvi);
+      // format the storage object array
       daily.push({
         temp: oneData.daily[i].temp.day,
         wind_speed: oneData.daily[i].wind_speed,
         humidity: oneData.daily[i].humidity,
         uvi: oneData.daily[i].uvi
       });
-    })
-    // $.extend(cities, current, daily);
-    cities.daily = daily;
+    });
+    city.daily = daily;
+    cities.push(city);
     console.log(cities);
+    saveCities();
   };
   // function for loading cities object from storage
   var loadCities = function() {
@@ -83,6 +85,9 @@ $(document).ready(function() {
     //   // loop over sub-array
     //   arr.forEach(function())
     // })
+  };
+  var saveCities = function() {
+    localStorage.setItem('cities', JSON.stringify(cities));
   };
   
   // city search button is clicked
