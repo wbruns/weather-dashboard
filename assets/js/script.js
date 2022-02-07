@@ -36,6 +36,9 @@ $(document).ready(function() {
     $('#current-wind').html(oneData.current.wind_speed);
     $('#current-humidity').html(oneData.current.humidity);
     $('#current-uv').html(oneData.current.uvi);
+    // create list element for a city that's been searched and append it to page
+    var cityLi = $("<li>").html(cityName);
+    $('#city-list').append(cityLi);
     // put the data in our cities object to save
     var city = {
       "name": cityName,
@@ -67,26 +70,25 @@ $(document).ready(function() {
     });
     city.daily = daily;
     cities.push(city);
-    console.log(cities);
     saveCities();
   };
   // function for loading cities object from storage
   var loadCities = function() {
-    cities = JSON.parse(localStorage.getItem('cities'));
-    // if nothing in localStorage, recreate cities object with arrays for forecast time
+    // if nothing in localStorage, recreate cities array
     if (!cities) {
-      cities = {
-        current: {},
-        daily: {}
-      };
+      cities = [];
+    } else {
+      cities = JSON.parse(localStorage.getItem('cities'));
     }
+    console.log(cities);
     // loop over object
-    // $.each(cities, function(list,arr) {
-    //   // loop over sub-array
-    //   arr.forEach(function())
-    // })
+    $.each(cities, function(list,arr) {
+      var name = this.name;
+      console.log(name);
+    })
   };
   var saveCities = function() {
+    // put cities array in storage
     localStorage.setItem('cities', JSON.stringify(cities));
   };
   
@@ -101,6 +103,10 @@ $(document).ready(function() {
     } else {
       alert('Please enter a City name');
     }
-    
   });
+  // prevent submit reload
+  $('#city-search').on('submit', function(event) {
+    event.preventDefault();
+  });
+  loadCities();
 });
